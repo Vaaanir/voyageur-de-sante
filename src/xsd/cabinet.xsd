@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<schema version="1.0"
+           xmlns="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.ujf-grenoble.fr/l3miage/medical"
+           xmlns:med="http://www.ujf-grenoble.fr/l3miage/medical"
+           elementFormDefault="qualified">
+    
+    <element name="cabinet" type="med:Cabinet"/>
+    
+    <complexType name="Cabinet">
+        <sequence>
+            <element name="nom" type="string"/>
+            <element name="adresse" type="med:Adresse"/>
+            <element name="infirmiers" type="med:Infirmier" minOccurs="1" maxOccurs="unbounded"/>
+            <element name="patients" type="med:Patient" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="Adresse">
+        <sequence>
+            <element name="étage" type="int" minOccurs="0"/>
+            <element name="numéro" type="positiveInteger" minOccurs="0"/>
+            <element name="rue" type="string"/>
+            <element name="ville" type="med:Ville"/>
+            <element name="codePostal" type="med:CodePostal"/>
+        </sequence>
+    </complexType>
+    
+    <simpleType name="Ville">
+        <restriction base="string">
+            <pattern value="^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$"/>
+        </restriction>
+    </simpleType>
+    
+    <simpleType name="CodePostal">
+        <restriction base="string">
+            <!-- Prend en compte le fait que les codes postaux démarrent par un département de 00 à 98-->
+            <pattern value="^((0[1-9])|([1-8][0-9])|(9[0-8])|(2A)|(2B))[0-9]{3}$"/>
+        </restriction>
+    </simpleType>
+    
+    <complexType name="Infirmier">
+        <attribute name="id" type="med:Id" use="required"/>
+        <sequence>
+            <element name="nom" type="med:Nom"/>
+            <element name="prenom" type="med:Nom"/>
+            <element name="photo" type="med:Photo"/>
+        </sequence>
+    </complexType>
+    
+    <simpleType name="Id">
+        <restriction base="string">
+            <pattern value="\d{3}"/>
+        </restriction>
+    </simpleType>
+    
+    <simpleType name="Nom">
+        <restriction base="string">
+            <pattern value="[\p{L}-]{3,}"/>
+        </restriction>
+    </simpleType>
+    
+    <simpleType name="Photo">
+        <restriction base="string">
+            <pattern value="([^\\s]+(\\.(?i)(jpe?g|png|gif|bmp|svg))$)"/>
+        </restriction>
+    </simpleType>
+    
+    <complexType name="patient">
+        <sequence>
+            <element name="nom" type="med:Nom"/>
+            <element name="prenom" type="med:Nom"/>
+            <element name="sexe" type="med:Sexe"/>
+            <element name="naissance" type="date"/>
+            <element name="numéro" type="med:Secu"/>
+            <element name="adresse" type="med:Adresse"/>
+            <element name="visite" type="med:Visite" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    
+    <simpleType name="Sexe">
+        <restriction base="string">
+            <enumeration value="F"/>
+            <enumeration value="H"/>
+            <enumeration value="A"/>
+        </restriction>
+    </simpleType>
+    
+    <simpleType name="Secu">
+        <restriction base="string">
+            <pattern value="[12][ \.\-]?[0-9]{2}[ \.\-]?(0[1-9]|[1][0-2])[ \.\-]?([0-9]{2}|2A|2B)[ \.\-]?[0-9]{3}[ \.\-]?[0-9]{3}[ \.\-]?[0-9]{2}"/>
+        </restriction>
+    </simpleType>
+    
+    <complexType name="Visite">
+        <attribute name="date" type="date" use="requiered"/>
+        <sequence>
+            <element name="acte" type="med:Acte" minOccurs="1" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="Acte">
+        <attribute name="id" use="required"/>
+    </complexType>
+
+</schema>

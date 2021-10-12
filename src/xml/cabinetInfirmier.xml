@@ -4,8 +4,8 @@
     <adresse>
         <numéro>60</numéro>
         <rue>rue de la Chimie</rue>
-        <codePostal>38041</codePostal>
         <ville>Grenoble</ville>
+        <codePostal>38041</codePostal>
     </adresse>
     <infirmiers>
         <infirmier id="001">
