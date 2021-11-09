@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<cabinet>
+<cabinet
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns="http://www.ujf-grenoble.fr/l3miage/medical" 
+    xsi:schemaLocation="http://www.ujf-grenoble.fr/l3miage/medical ../xsd/cabinet.xsd">
     <nom>Soins à Grenoble</nom>
     <adresse>
         <numéro>60</numéro>

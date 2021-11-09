@@ -17,8 +17,8 @@ and open the template in the editor.
         <sequence>
             <element name="nom" type="string"/>
             <element name="adresse" type="med:Adresse"/>
-            <element name="infirmiers" type="med:Infirmier" minOccurs="1" maxOccurs="unbounded"/>
-            <element name="patients" type="med:Patient" minOccurs="0" maxOccurs="unbounded"/>
+            <element name="infirmiers" type="med:Infirmiers"/>
+            <element name="patients" type="med:Patients"/>
         </sequence>
     </complexType>
     
@@ -27,31 +27,32 @@ and open the template in the editor.
             <element name="étage" type="int" minOccurs="0"/>
             <element name="numéro" type="positiveInteger" minOccurs="0"/>
             <element name="rue" type="string"/>
-            <element name="ville" type="med:Ville"/>
+            <element name="ville" type="string"/>
             <element name="codePostal" type="med:CodePostal"/>
         </sequence>
     </complexType>
-    
-    <simpleType name="Ville">
-        <restriction base="string">
-            <pattern value="^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$"/>
-        </restriction>
-    </simpleType>
+
     
     <simpleType name="CodePostal">
         <restriction base="string">
-            <!-- Prend en compte le fait que les codes postaux démarrent par un département de 00 à 98-->
-            <pattern value="^((0[1-9])|([1-8][0-9])|(9[0-8])|(2A)|(2B))[0-9]{3}$"/>
+            <!-- Prend en compte le fait que les codes postaux démarrent par un département de 00 à 98 prend en compte les departement corse avec les 2A et 2B-->
+            <pattern value="((0[1-9])|([1-8][0-9])|(9[0-8])|(2A)|(2B))[0-9]{3}"/>
         </restriction>
     </simpleType>
     
+    <complexType name="Infirmiers">
+        <sequence>
+            <element name="infirmier" type="med:Infirmier" minOccurs="1" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    
     <complexType name="Infirmier">
-        <attribute name="id" type="med:Id" use="required"/>
         <sequence>
             <element name="nom" type="med:Nom"/>
-            <element name="prenom" type="med:Nom"/>
+            <element name="prénom" type="med:Nom"/>
             <element name="photo" type="med:Photo"/>
         </sequence>
+        <attribute name="id" type="med:Id" use="required"/>
     </complexType>
     
     <simpleType name="Id">
@@ -68,14 +69,20 @@ and open the template in the editor.
     
     <simpleType name="Photo">
         <restriction base="string">
-            <pattern value="([^\\s]+(\\.(?i)(jpe?g|png|gif|bmp|svg))$)"/>
+            <pattern value=".*\.(jpe?g|png|gif|bmp|svg)"/>
         </restriction>
     </simpleType>
     
-    <complexType name="patient">
+    <complexType name="Patients">
+        <sequence>
+            <element name="patient" type="med:Patient" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="Patient">
         <sequence>
             <element name="nom" type="med:Nom"/>
-            <element name="prenom" type="med:Nom"/>
+            <element name="prénom" type="med:Nom"/>
             <element name="sexe" type="med:Sexe"/>
             <element name="naissance" type="date"/>
             <element name="numéro" type="med:Secu"/>
@@ -86,9 +93,7 @@ and open the template in the editor.
     
     <simpleType name="Sexe">
         <restriction base="string">
-            <enumeration value="F"/>
-            <enumeration value="H"/>
-            <enumeration value="A"/>
+            <pattern value="[FHMA]"/>
         </restriction>
     </simpleType>
     
@@ -99,10 +104,11 @@ and open the template in the editor.
     </simpleType>
     
     <complexType name="Visite">
-        <attribute name="date" type="date" use="requiered"/>
         <sequence>
             <element name="acte" type="med:Acte" minOccurs="1" maxOccurs="unbounded"/>
         </sequence>
+        <attribute name="date" type="date" use="required"/>
+        <attribute name="intervenant" type="med:Id"/>
     </complexType>
     
     <complexType name="Acte">
