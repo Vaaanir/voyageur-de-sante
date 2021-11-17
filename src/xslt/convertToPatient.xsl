@@ -18,55 +18,55 @@
          syntax recommendation http://www.w3.org/TR/xslt 
     -->
     <xsl:template match="/">
-        <patient  xmlns="http://www.ujf-grenoble.fr/l3miage/medical">
-            <nom>
+        <inf:patient><!--  xmlns="http://www.ujf-grenoble.fr/l3miage/patient">-->
+            <inf:nom>
                 <xsl:value-of select="$patient/inf:nom"/>
-            </nom>
-            <prénom><xsl:value-of select="$patient/inf:prénom"/></prénom>
-            <sexe><xsl:value-of select="$patient/inf:sexe"/></sexe>
-            <naissance><xsl:value-of select="$patient/inf:naissance"/></naissance>
-            <numéroSS><xsl:value-of select="$patient/inf:numéro"/></numéroSS>
-            <adresse>
-                <numéro>
+            </inf:nom>
+            <inf:prénom><xsl:value-of select="$patient/inf:prénom"/></inf:prénom>
+            <inf:sexe><xsl:value-of select="$patient/inf:sexe"/></inf:sexe>
+            <inf:naissance><xsl:value-of select="$patient/inf:naissance"/></inf:naissance>
+            <inf:numéroSS><xsl:value-of select="$patient/inf:numéro"/></inf:numéroSS>
+            <inf:adresse>
+                <inf:numéro>
                     <xsl:value-of select="$patient/inf:adresse/inf:numéro"/>
-                </numéro>
-                <rue>
+                </inf:numéro>
+                <inf:rue>
                     <xsl:value-of select="$patient/inf:adresse/inf:rue"/>
-                </rue>
-                <codePostal>
+                </inf:rue>
+                <inf:codePostal>
                     <xsl:value-of select="$patient/inf:adresse/inf:codePostal"/>
-                </codePostal>
-                <ville>
+                </inf:codePostal>
+                <inf:ville>
                     <xsl:value-of select="$patient/inf:adresse/inf:ville"/>
-                </ville>
-            </adresse>
+                </inf:ville>
+            </inf:adresse>
             <xsl:apply-templates select="$patient/inf:visite" />
-        </patient>
+        </inf:patient>
     </xsl:template>
     
     <xsl:template match="inf:visite">
         <xsl:variable name="intervenant" select="@intervenant"/>
-        <visite>
+        <inf:visite>
             <xsl:attribute name="date">
                 <xsl:value-of select="@date"/>
             </xsl:attribute>
-            <intervenant>
-                <nom>
+            <inf:intervenant>
+                <inf:nom>
                     <xsl:value-of select="//inf:infirmier[@id=$intervenant]/inf:nom"/>
-                </nom>
-                <prénom>
+                </inf:nom>
+                <inf:prénom>
                     <xsl:value-of select="//inf:infirmier[@id=$intervenant]/inf:prénom"/>
-                </prénom>
-            </intervenant>
+                </inf:prénom>
+            </inf:intervenant>
             <xsl:variable name="ide" select="inf:acte/@id"/>
             <xsl:apply-templates select="$actes/act:actes/act:acte[@id=$ide]"/>
-        </visite>
+        </inf:visite>
     </xsl:template>
     
     <xsl:template match="act:acte" >
-        <acte>
+        <inf:acte>
             <xsl:value-of select="text()"/>
-        </acte>
+        </inf:acte>
     </xsl:template>
 
 </xsl:stylesheet>
