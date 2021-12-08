@@ -11,7 +11,12 @@ and open the template in the editor.
            xmlns:med="http://www.ujf-grenoble.fr/l3miage/medical"
            elementFormDefault="qualified">
     
-    <element name="cabinet" type="med:Cabinet"/>
+    <element name="cabinet" type="med:Cabinet">
+        <xs:keyref name="refInfirmierExist" refer="med:idUnique">
+            <xs:selector xpath="med:patients/med:patient/med:visite"/>
+            <xs:field xpath="@intervenant"/>
+        </xs:keyref>
+    </xs:element>
     
     <complexType name="Cabinet">
         <sequence>
