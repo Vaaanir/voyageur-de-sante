@@ -20,7 +20,7 @@
     <xsl:template match="/">
         <html>
             <head>
-                <title>Vos visites du jours</title>
+                <title>Vos visites du jour</title>
                 <script type="text/javascript" src="./js/script.js"></script>
                 <link rel="stylesheet" href="./css/style.css"/>
             </head>
@@ -53,7 +53,7 @@
                             '<xsl:value-of select="$nom"/>',
                             `<xsl:value-of select="$actes/act:actes/act:acte[@id=$ide]"/>`)
             </xsl:attribute>
-            FAAAAACTURE !!!!
+            FACTURE !
         </button>
     </xsl:template>
     
