@@ -12,11 +12,11 @@ and open the template in the editor.
            elementFormDefault="qualified">
     
     <element name="cabinet" type="med:Cabinet">
-        <xs:keyref name="refInfirmierExist" refer="med:idUnique">
-            <xs:selector xpath="med:patients/med:patient/med:visite"/>
-            <xs:field xpath="@intervenant"/>
-        </xs:keyref>
-    </xs:element>
+        <keyref name="refInfirmierExist" refer="med:idUnique">
+            <selector xpath="med:patients/med:patient/med:visite"/>
+            <field xpath="@intervenant"/>
+        </keyref>
+    </element>
     
     <complexType name="Cabinet">
         <sequence>
