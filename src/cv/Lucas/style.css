@@ -1,0 +1,62 @@
+:root{
+    --bg : black;
+    --font : gray;
+    --font-light: white;
+}
+
+body{
+    color: var(--font);
+    background-color: var(--bg);
+}
+
+.container-flex{
+    display: flex;
+    border-style: groove;
+    /* align-items: center; */
+    
+}
+
+.subcontainer-flex{
+    margin: 0 auto 0 auto;
+}
+
+#year{
+    color: var(--font-light);
+}
+
+.width {
+    flex-basis: 100%;
+    text-align: center;
+}
+
+.period{
+    font-style: italic;
+}
+
+h2 {
+    text-align: center;
+}
+
+.fl {
+    display: flex;
+    border-style: groove;
+    justify-content: center;
+}
+
+.degree-year {
+    font-size: large;
+    font-weight: bold;
+}
+
+td:first-child {
+    text-align: center;
+    width: 50%;
+}
+
+td:last-child {
+    text-align: center;
+}
+
+#div-border {
+    border-style: groove;
+}
