@@ -10,19 +10,22 @@ and open the template in the editor.
            targetNamespace="http://www.ujf-grenoble.fr/l3miage/medical"
            xmlns:med="http://www.ujf-grenoble.fr/l3miage/medical"
            elementFormDefault="qualified">
-    
+    <!-- Elements Racine -->
     <element name="cabinet" type="med:Cabinet">
+        <!-- Verification de la presence de l'attribut id -->
         <keyref name="refInfirmierExist" refer="med:idUnique">
             <selector xpath="med:patients/med:patient/med:visite"/>
             <field xpath="@intervenant"/>
         </keyref>
     </element>
-    
+
+    <!-- complextype cabinet -->
     <complexType name="Cabinet">
         <sequence>
             <element name="nom" type="string"/>
             <element name="adresse" type="med:Adresse"/>
             <element name="infirmiers" type="med:Infirmiers">
+                <!-- Verification de l'unicité de l'attribut id -->
                 <key name="idUnique">
                     <selector xpath="med:infirmier" />
                     <field xpath="@id" />
@@ -31,7 +34,8 @@ and open the template in the editor.
             <element name="patients" type="med:Patients"/>
         </sequence>
     </complexType>
-    
+
+    <!-- complextype adresse -->
     <complexType name="Adresse">
         <sequence>
             <element name="étage" type="int" minOccurs="0"/>
@@ -42,20 +46,23 @@ and open the template in the editor.
         </sequence>
     </complexType>
 
-    
+    <!-- SimpleType CodePostal -->
     <simpleType name="CodePostal">
         <restriction base="string">
-            <!-- Prend en compte le fait que les codes postaux démarrent par un département de 00 à 98 prend en compte les departement corse avec les 2A et 2B-->
+            <!-- Prend en compte le fait que les codes postaux démarrent par un département de 00 à 98 prend en compte les department corse avec les 2A et 2B -->
             <pattern value="((0[1-9])|([1-8][0-9])|(9[0-8])|(2A)|(2B))[0-9]{3}"/>
         </restriction>
     </simpleType>
-    
+
+    <!-- complextype infirmiers -->
     <complexType name="Infirmiers">
         <sequence>
+            <!-- On veut au moins un infirmier dans un cabinet -->
             <element name="infirmier" type="med:Infirmier" minOccurs="1" maxOccurs="unbounded"/>
         </sequence>
     </complexType>
-    
+
+    <!-- complextype infirmier -->
     <complexType name="Infirmier">
         <sequence>
             <element name="nom" type="med:Nom"/>
@@ -64,31 +71,38 @@ and open the template in the editor.
         </sequence>
         <attribute name="id" type="med:Id"/>
     </complexType>
-    
+
+    <!-- SimpleType ID -->
     <simpleType name="Id">
         <restriction base="string">
+            <!-- verifies que l'id est composer de 3 digits -->
             <pattern value="\d{3}"/>
         </restriction>
     </simpleType>
-    
+
+    <!-- SimpleType Nom -->
     <simpleType name="Nom">
         <restriction base="string">
             <pattern value="[\p{L}-]{3,}"/>
         </restriction>
     </simpleType>
-    
+
+    <!-- SimpleType Photo -->
     <simpleType name="Photo">
         <restriction base="string">
+            <!-- verifies que le string se termine par .jpg .jpeg .png .gif .bmp .svg -->
             <pattern value=".*\.(jpe?g|png|gif|bmp|svg)"/>
         </restriction>
     </simpleType>
-    
+
+    <!-- complextype patients -->
     <complexType name="Patients">
         <sequence>
             <element name="patient" type="med:Patient" minOccurs="0" maxOccurs="unbounded"/>
         </sequence>
     </complexType>
-    
+
+    <!-- complextype patient -->
     <complexType name="Patient">
         <sequence>
             <element name="nom" type="med:Nom"/>
@@ -100,27 +114,41 @@ and open the template in the editor.
             <element name="visite" type="med:Visite" minOccurs="0" maxOccurs="unbounded"/>
         </sequence>
     </complexType>
-    
+
+    <!-- SimpleType Sexe -->
     <simpleType name="Sexe">
         <restriction base="string">
+            <!-- on vérifie que le string correspond à "M", "F" ou "A" -->
             <pattern value="[FMA]"/>
         </restriction>
     </simpleType>
-    
+
+    <!-- SimpleType Secu -->
     <simpleType name="Secu">
         <restriction base="string">
+            <!-- on vérifie que le string composer de 9 digits
+                 [12] que le premiere digit est 1 ou 2 en fonction de si on est nés femme ou un homme
+                 [0-9]{2} que les 2 digit suivant sont des chiffres pouvant corespondre à une années de naissance
+                 (0[1-9]|[1][0-2]) qie les deux autre digit qui suivent corresponde à un mois valide
+                 ([0-9]{2}|2A|2B) que les deux character qui suive coresponde à un numéro de déparetement valide corse y compris (2A,2B)
+                 [0-9]{3} que les 3 dernier chiffre corespondent à un numéro de sécu valide (on ne sais pas comment verifier le code comune insee
+                 [0-9]{2} deux derniers chiffre valide pour verifier l'ordre de renaissance
+            -->
             <pattern value="[12][ \.\-]?[0-9]{2}[ \.\-]?(0[1-9]|[1][0-2])[ \.\-]?([0-9]{2}|2A|2B)[ \.\-]?[0-9]{3}[ \.\-]?[0-9]{3}[ \.\-]?[0-9]{2}"/>
         </restriction>
     </simpleType>
-    
+
+    <!-- SimpleType Adresse -->
     <complexType name="Visite">
         <sequence>
+            <!-- une visite donne lieux à au moins un acte -->
             <element name="acte" type="med:Acte" minOccurs="1" maxOccurs="unbounded"/>
         </sequence>
         <attribute name="date" type="date" use="required"/>
         <attribute name="intervenant" type="med:Id"/>
     </complexType>
-    
+
+    <!-- SimpleType Acte -->
     <complexType name="Acte">
         <attribute name="id" use="required"/>
     </complexType>

@@ -19,13 +19,19 @@
     -->
     <xsl:template match="/">
         <inf:patient><!--  xmlns="http://www.ujf-grenoble.fr/l3miage/patient">-->
+            <!--On place le nom du patient dans la balise nom-->
             <inf:nom>
                 <xsl:value-of select="$patient/inf:nom"/>
             </inf:nom>
+            <!--On place le prénom du patient dans la balise prenom-->
             <inf:prénom><xsl:value-of select="$patient/inf:prénom"/></inf:prénom>
+            <!--On place l'sexe du patient dans la balise sexe-->
             <inf:sexe><xsl:value-of select="$patient/inf:sexe"/></inf:sexe>
+            <!--On place la date de naissance du patient dans la balise naissance-->
             <inf:naissance><xsl:value-of select="$patient/inf:naissance"/></inf:naissance>
+            <!--On place le numéro de sécurité social dans la balise numéroSS-->
             <inf:numéroSS><xsl:value-of select="$patient/inf:numéro"/></inf:numéroSS>
+            <!--On indique l'adresse du patient-->
             <inf:adresse>
                 <inf:numéro>
                     <xsl:value-of select="$patient/inf:adresse/inf:numéro"/>
@@ -40,11 +46,14 @@
                     <xsl:value-of select="$patient/inf:adresse/inf:ville"/>
                 </inf:ville>
             </inf:adresse>
+            <!-- on récupère toutes les visites du patient grace au modèles visites-->
             <xsl:apply-templates select="$patient/inf:visite" />
         </inf:patient>
     </xsl:template>
-    
+
+    <!-- template pour les visites-->
     <xsl:template match="inf:visite">
+        <!-- création de la variable intervenant qui contient l"id de l'intervenant-->
         <xsl:variable name="intervenant" select="@intervenant"/>
         <inf:visite>
             <xsl:attribute name="date">
@@ -52,9 +61,11 @@
             </xsl:attribute>
             <inf:intervenant>
                 <inf:nom>
+                    <!-- pour simplifier la selection xpath on utilise la variable intervenant-->
                     <xsl:value-of select="//inf:infirmier[@id=$intervenant]/inf:nom"/>
                 </inf:nom>
                 <inf:prénom>
+                    <!-- pour simplifier la selection xpath on utilise la variable intervenant-->
                     <xsl:value-of select="//inf:infirmier[@id=$intervenant]/inf:prénom"/>
                 </inf:prénom>
             </inf:intervenant>
@@ -62,7 +73,8 @@
             <xsl:apply-templates select="$actes/act:actes/act:acte[@id=$ide]"/>
         </inf:visite>
     </xsl:template>
-    
+
+    <!-- template pour les actes-->
     <xsl:template match="act:acte" >
         <inf:acte>
             <xsl:value-of select="text()"/>
